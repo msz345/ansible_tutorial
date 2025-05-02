@@ -1,0 +1,13 @@
+- name: Install unzip
+  tags: unzip
+  ansible.builtin.package:
+    name: unzip
+    state: present
+
+- name: Check if terraform is missing
+  tags: terraform
+  ansible.builtin.file:
+    path: /usr/local/bin/terraform
+    state: file
+  notify:
+    - Install terraform

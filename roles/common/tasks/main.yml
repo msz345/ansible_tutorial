@@ -1,0 +1,20 @@
+- name: Create marcus user
+  tags: always
+  ansible.builtin.user:
+    name: marcus
+    groups: root
+
+- name: Add ssh key for marcus
+  tags: always
+  ansible.posix.authorized_key:
+    user: marcus
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFgPobE5CbVaQVFFL15cAuobYEJ3aHm/MrlHtdOxfBrt gaming-pc"
+
+- name: Add sudoers file for marcus
+  tags: always
+  ansible.builtin.copy:
+    src: sudoer_marcus
+    dest: /etc/sudoers.d/marcus
+    owner: root
+    group: root
+    mode: "0440"

@@ -1,0 +1,5 @@
+- name: Restart httpd
+  tags: apache,centos,httpd
+  ansible.builtin.service:
+    name: httpd
+    state: restarted

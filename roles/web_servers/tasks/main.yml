@@ -1,0 +1,44 @@
+- name: Install apache and php packages (Ubuntu)
+  tags: ubuntu,apache,apache2
+  ansible.builtin.apt:
+    name:
+      - apache2
+      - libapache2-mod-php
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install apache and php packages (CentOS)
+  tags: centos,apache,httpd
+  ansible.builtin.dnf:
+    name:
+      - httpd
+      - php
+    state: present
+  when: ansible_distribution == "CentOS"
+
+- name: Start apache (CentOS)
+  tags: centos,apache,httpd
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: true
+  when: ansible_distribution == "CentOS"
+
+- name: Change e-mail address for admin (CentOS)
+  tags: apache,centos,httpd
+  ansible.builtin.lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^ServerAdmin'
+    line: ServerAdmin somebody@somewhere.net
+  when: ansible_distribution == "CentOS"
+  notify:
+    - Restart httpd
+
+- name: Copy default html file for site
+  tags: apache,httpd,apache2
+  ansible.builtin.copy:
+    src: default_site.html
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: "0644"
