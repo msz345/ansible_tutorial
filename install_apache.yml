@@ -5,22 +5,20 @@
   become: true
   tasks:
 
-    - name: Update respository index
-      ansible.builtin.apt:
-        update_cache: true
-
-    - name: Install apache2 and php packages
+    - name: Install or upgrade apache2 and php packages
       ansible.builtin.apt: # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
         name:
           - apache2
           - libapache2-mod-php
-        state: present
+        state: latest
+        update_cache: true
       when: ansible_distribution == "Ubuntu"
 
-    - name: Upgrade packages
-      ansible.builtin.apt:
+    - name: Install or upgrade apache2 and php packages
+      ansible.builtin.dnf: # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/dnf_module.html#ansible-collections-ansible-builtin-dnf-module
         name:
-          - apache2
-          - libapache2-mod-php
-        only_upgrade: true # <- Upgrades but does not install additional packages.
-      when: ansible_distribution == "Ubuntu"
+          - httpd
+          - php
+        state: latest
+        update_cache: true
+      when: ansible_distribution == "CentOS"
