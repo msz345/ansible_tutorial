@@ -25,10 +25,23 @@
   tasks:
 
     - name: Install unzip
+      tags: unzip
       ansible.builtin.package:
         name: unzip
+        state: present
+
+    - name: Check if terraform is missing
+      tags: terraform
+      ansible.builtin.file:
+        path: /usr/local/bin/terraform
+        state: file
+      notify:
+        - Install terraform
+
+  handlers:
 
     - name: Install terraform
+      tags: terraform
       ansible.builtin.unarchive:
         src: https://releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_linux_amd64.zip
         dest: /usr/local/bin
@@ -60,6 +73,24 @@
         state: present
       when: ansible_distribution == "CentOS"
 
+    - name: Start apache (CentOS)
+      tags: centos,apache,httpd
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+      when: ansible_distribution == "CentOS"
+
+    - name: Change e-mail address for admin (CentOS)
+      tags: apache,centos,httpd
+      ansible.builtin.lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^ServerAdmin'
+        line: ServerAdmin somebody@somewhere.net
+      when: ansible_distribution == "CentOS"
+      notify:
+        - Restart httpd (CentOS)
+
     - name: Copy default html file for site
       tags: apache,httpd,apache2
       ansible.builtin.copy:
@@ -68,6 +99,14 @@
         owner: root
         group: root
         mode: "0644"
+
+  handlers:
+
+    - name: Restart httpd (CentOS)
+      tags: apache,centos,httpd
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
 
 - name: Install database on database servers
   hosts: db_servers
