@@ -9,15 +9,11 @@
       ansible.builtin.apt:
         update_cache: true
 
-    - name: Install apache2 package
+    - name: Install apache2 and php packages
       ansible.builtin.apt: # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
-        name: apache2
-        state: present
-      when: ansible_distribution == "Ubuntu"
-
-    - name: Add php support for apache2
-      ansible.builtin.apt:
-        name: libapache2-mod-php
+        name:
+          - apache2
+          - libapache2-mod-php
         state: present
       when: ansible_distribution == "Ubuntu"
 

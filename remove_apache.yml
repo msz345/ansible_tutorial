@@ -5,14 +5,10 @@
   become: true
   tasks:
 
-    - name: Remove apache2 package
+    - name: Remove apache2 and php packages
       ansible.builtin.apt: # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
-        name: apache2
-        state: absent
-      when: ansible_distribution == "Ubuntu"
-
-    - name: Remove php support for apache2
-      ansible.builtin.apt:
-        name: libapache2-mod-php
+        name:
+          - apache2
+          - libapache2-mod-php
         state: absent
       when: ansible_distribution == "Ubuntu"
