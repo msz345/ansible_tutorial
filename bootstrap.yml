@@ -1,0 +1,52 @@
+---
+
+- name: Install updates
+  hosts: all
+  become: true
+  pre_tasks:
+
+    - name: Install updates (CentOS)
+      tags: always
+      ansible.builtin.dnf:
+        update_only: true
+        update_cache: true
+      when: ansible_distribution == "CentOS"
+
+    - name: Install updates (Ubuntu)
+      tags: always
+      ansible.builtin.apt:
+        upgrade: dist
+        update_cache: true
+      when: ansible_distribution == "Ubuntu"
+
+- name: Create users
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Create ansible user
+      tags: always
+      ansible.builtin.user:
+        name: ansible
+        groups: root
+
+    - name: Add ssh key for marcus
+      tags: always
+      ansible.posix.authorized_key:
+        user: marcus
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFgPobE5CbVaQVFFL15cAuobYEJ3aHm/MrlHtdOxfBrt gaming-pc"
+
+    - name: Add ssh key for ansible
+      tags: always
+      ansible.posix.authorized_key:
+        user: ansible
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGIBGsEciMFc8QPT7viKGMT6VWyNGv7/Dpp+Nh/t7HgA sn@ansible"
+
+    - name: Add sudoers file for ansible
+      tags: always
+      ansible.builtin.copy:
+        src: sudoer_ansible
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: "0440"

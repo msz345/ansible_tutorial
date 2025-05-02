@@ -1,6 +1,6 @@
 ---
 
-- name: Install updates on all servers or workstations
+- name: Update repository cache (CentOS)
   hosts: all
   become: true
   pre_tasks:
@@ -8,16 +8,42 @@
     - name: Install updates (CentOS)
       tags: always
       ansible.builtin.dnf:
-        update_only: true
         update_cache: true
+      changed_when: false
       when: ansible_distribution == "CentOS"
 
-    - name: Install updates (Ubuntu)
+    - name: Update repository cache (Ubuntu)
       tags: always
       ansible.builtin.apt:
-        upgrade: dist
         update_cache: true
+      changed_when: false
       when: ansible_distribution == "Ubuntu"
+
+- name: Create users
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Create marcus user
+      tags: always
+      ansible.builtin.user:
+        name: marcus
+        groups: root
+
+    - name: Add ssh key for marcus
+      tags: always
+      ansible.posix.authorized_key:
+        user: marcus
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFgPobE5CbVaQVFFL15cAuobYEJ3aHm/MrlHtdOxfBrt gaming-pc"
+
+    - name: Add sudoers file for marcus
+      tags: always
+      ansible.builtin.copy:
+        src: sudoer_marcus
+        dest: /etc/sudoers.d/marcus
+        owner: root
+        group: root
+        mode: "0440"
 
 - name: Install terraform on workstations
   hosts: workstations
