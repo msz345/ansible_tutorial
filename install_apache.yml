@@ -6,9 +6,19 @@
   tasks:
 
     - name: Install or update apache and php packages
-      ansible.builtin.package:
+      ansible.builtin.apt:
         name:
-          - "{{ apache_package }}"
-          - "{{ php_package }}"
+          - apache2
+          - libapache2-mod-php
         state: latest
         update_cache: true
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install or update apache and php packages
+      ansible.builtin.dnf:
+        name:
+          - httpd
+          - php
+        state: latest
+        update_cache: true
+      when: ansible_distribution == "CentOS"

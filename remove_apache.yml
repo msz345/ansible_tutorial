@@ -1,6 +1,6 @@
 ---
 
-- name: Play to uninstall apache2
+- name: Uninstall apache2
   hosts: all
   become: true
   tasks:
