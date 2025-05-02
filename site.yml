@@ -1,6 +1,6 @@
 ---
 
-- name: Install updates
+- name: Install updates on all servers or workstations
   hosts: all
   become: true
   pre_tasks:
@@ -19,7 +19,25 @@
         update_cache: true
       when: ansible_distribution == "Ubuntu"
 
-- name: Install apache and php packages
+- name: Install terraform on workstations
+  hosts: workstations
+  become: true
+  tasks:
+
+    - name: Install unzip
+      ansible.builtin.package:
+        name: unzip
+
+    - name: Install terraform
+      ansible.builtin.unarchive:
+        src: https://releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: true
+        mode: "0755"
+        owner: root
+        group: root
+
+- name: Install apache and php packages on web servers
   hosts: web_servers
   become: true
   tasks:
@@ -42,7 +60,16 @@
         state: present
       when: ansible_distribution == "CentOS"
 
-- name: Install database
+    - name: Copy default html file for site
+      tags: apache,httpd,apache2
+      ansible.builtin.copy:
+        src: default_site.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: "0644"
+
+- name: Install database on database servers
   hosts: db_servers
   become: true
   tasks:
@@ -61,7 +88,7 @@
         state: present
       when: ansible_distribution == "Ubuntu"
 
-- name: Install samba
+- name: Install samba on file servers
   hosts: file_servers
   become: true
   tasks:
