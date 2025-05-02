@@ -35,3 +35,13 @@ Upgrade all the package updates that are available
 Run the playbook
 
 ```ansible-playbook --ask-become-pass install_apache.yml```
+
+List the available tags in a playbook
+
+```ansible-playbook --list-tags site.yml```
+
+Examples of running a playbook but targeting specific tags
+
+```ansible-playbook --tags db --ask-become-pass site.yml
+ansible-playbook --tags centos --ask-become-pass site.yml
+ansible-playbook --tags apache --ask-become-pass site.yml```

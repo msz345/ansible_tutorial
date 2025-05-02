@@ -3,15 +3,17 @@
 - name: Install updates
   hosts: all
   become: true
-  tasks:
+  pre_tasks:
 
     - name: Install updates (CentOS)
+      tags: always
       ansible.builtin.dnf:
         update_only: true
         update_cache: true
       when: ansible_distribution == "CentOS"
 
     - name: Install updates (Ubuntu)
+      tags: always
       ansible.builtin.apt:
         upgrade: dist
         update_cache: true
@@ -23,6 +25,7 @@
   tasks:
 
     - name: Install apache and php packages (Ubuntu)
+      tags: ubuntu,apache,apache2
       ansible.builtin.apt:
         name:
           - apache2
@@ -31,6 +34,7 @@
       when: ansible_distribution == "Ubuntu"
 
     - name: Install apache and php packages (CentOS)
+      tags: centos,apache,httpd
       ansible.builtin.dnf:
         name:
           - httpd
@@ -44,12 +48,14 @@
   tasks:
 
     - name: Install mariadb (CentOS)
+      tags: centos,db,mariadb
       ansible.builtin.dnf:
         name: mariadb
         state: present
       when: ansible_distribution == "CentOS"
 
     - name: Install mariadb server (Ubuntu)
+      tags: ubuntu,db,mariadb
       ansible.builtin.apt:
         name: mariadb-server
         state: present
@@ -61,6 +67,7 @@
   tasks:
 
     - name: Install samba package
+      tags: samba
       ansible.builtin.package:
         name: samba
         state: present
