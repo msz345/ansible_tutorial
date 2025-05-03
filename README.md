@@ -69,6 +69,6 @@ ansible-playbook --tags apache --ask-become-pass site.yml
 Run bootstrap playbook to setup mandatory user, then run site playbook to setup all servers.
 
 ```bash
-ansible-playbook --ask-become-pass bootstrap.yml
+ansible-playbook --ask-become-pass ./playbooks/bootstrap.yml
 ansible-playbook site.yml
 ```
