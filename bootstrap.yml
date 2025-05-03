@@ -1,5 +1,10 @@
 ---
 
+#
+# Description: bootstrap play book
+# Path:     /bootstrap.yml
+#
+
 - name: Install updates
   hosts: all
   become: true
@@ -24,29 +29,23 @@
   become: true
   tasks:
 
-    - name: Create ansible user
+    - name: Create sn user
       tags: always
       ansible.builtin.user:
-        name: ansible
+        name: sn
         groups: root
 
-    - name: Add ssh key for marcus
+    - name: Add ssh key for sn
       tags: always
       ansible.posix.authorized_key:
-        user: marcus
-        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFgPobE5CbVaQVFFL15cAuobYEJ3aHm/MrlHtdOxfBrt gaming-pc"
-
-    - name: Add ssh key for ansible
-      tags: always
-      ansible.posix.authorized_key:
-        user: ansible
+        user: sn
         key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGIBGsEciMFc8QPT7viKGMT6VWyNGv7/Dpp+Nh/t7HgA sn@ansible"
 
-    - name: Add sudoers file for ansible
+    - name: Add sudoers file for sn
       tags: always
       ansible.builtin.copy:
-        src: sudoer_ansible
-        dest: /etc/sudoers.d/ansible
+        src: sudoer_sn
+        dest: /etc/sudoers.d/sn
         owner: root
         group: root
         mode: "0440"

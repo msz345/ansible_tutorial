@@ -1,13 +1,19 @@
+#
+# Description: workstations task book
+# Path:     /roles/workstations/tasks/main.yml
+# Requires: /roles/workstations/handlers/main.yml
+#
+
 - name: Install unzip
   tags: unzip
   ansible.builtin.package:
-    name: unzip
+    name: "{{ unzip_package_name }}"
     state: present
 
 - name: Check if terraform is missing
   tags: terraform
   ansible.builtin.file:
-    path: /usr/local/bin/terraform
+    path: "{{ terraform_path }}/terraform"
     state: file
   notify:
     - Install terraform

@@ -1,3 +1,9 @@
+#
+# Description: common task book
+# Path:     /roles/common/tasks/main.yml
+# Requires: /roles/common/files/sudoer_marcus
+#
+
 - name: Create marcus user
   tags: always
   ansible.builtin.user:

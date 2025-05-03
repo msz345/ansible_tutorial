@@ -1,5 +1,15 @@
 ---
 
+#
+# Description: site play book
+# Path:     /site.yml
+# Requires: /roles/common/tasks/main.yml
+#           /roles/workstations/tasks/main.yml
+#           /roles/web_servers/tasks/main.yml
+#           /roles/db_servers/tasks/main.yml
+#           /roles/file_servers/tasks/main.yml
+#
+
 - name: Update repository cache (CentOS)
   hosts: all
   become: true

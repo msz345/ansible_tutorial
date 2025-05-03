@@ -1,8 +1,13 @@
+#
+# Description: workstations task book
+# Path:     /roles/workstations/handlers/main.yml
+#
+
 - name: Install terraform
   tags: terraform
   ansible.builtin.unarchive:
-    src: https://releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_linux_amd64.zip
-    dest: /usr/local/bin
+    src: "{{ terraform_archive_name }}"
+    dest: "{{ terraform_path }}"
     remote_src: true
     mode: "0755"
     owner: root

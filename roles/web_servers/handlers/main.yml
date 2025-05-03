@@ -1,5 +1,10 @@
-- name: Restart httpd
-  tags: apache,centos,httpd
+#
+# Description: web_server handlers
+# Path: /roles/web_server/handlers/main.yml
+#
+
+- name: Restart apache
+  tags: apache
   ansible.builtin.service:
-    name: httpd
+    name: "{{ apache_service }}"
     state: restarted

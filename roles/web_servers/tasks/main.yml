@@ -1,41 +1,37 @@
-- name: Install apache and php packages (Ubuntu)
-  tags: ubuntu,apache,apache2
-  ansible.builtin.apt:
-    name:
-      - apache2
-      - libapache2-mod-php
-    state: present
-  when: ansible_distribution == "Ubuntu"
+#
+# Description: web_server task book
+# Path:     /roles/web_server/tasks/main.yml
+# Requires: /roles/web_server/handlers/main.yml
+#           /roles/web_server/files/default_site.html
+#
 
-- name: Install apache and php packages (CentOS)
-  tags: centos,apache,httpd
-  ansible.builtin.dnf:
+- name: Install apache and php packages
+  tags: apache
+  ansible.builtin.package:
     name:
-      - httpd
-      - php
+      - "{{ apache_package_name }}"
+      - "{{ php_package_name }}"
     state: present
-  when: ansible_distribution == "CentOS"
 
-- name: Start apache (CentOS)
-  tags: centos,apache,httpd
+- name: Start apache
+  tags: apache
   ansible.builtin.service:
-    name: httpd
+    name: "{{ apache_service }}"
     state: started
     enabled: true
-  when: ansible_distribution == "CentOS"
 
 - name: Change e-mail address for admin (CentOS)
-  tags: apache,centos,httpd
+  tags: apache, centos
   ansible.builtin.lineinfile:
     path: /etc/httpd/conf/httpd.conf
     regexp: '^ServerAdmin'
     line: ServerAdmin somebody@somewhere.net
   when: ansible_distribution == "CentOS"
   notify:
-    - Restart httpd
+    - Restart apache
 
 - name: Copy default html file for site
-  tags: apache,httpd,apache2
+  tags: apache
   ansible.builtin.copy:
     src: default_site.html
     dest: /var/www/html/index.html

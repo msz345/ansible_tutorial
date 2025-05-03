@@ -1,13 +1,10 @@
-- name: Install mariadb (CentOS)
-  tags: centos,db,mariadb
-  ansible.builtin.dnf:
-    name: mariadb
-    state: present
-  when: ansible_distribution == "CentOS"
+#
+# Description: db_servers task book
+# Path:     /roles/db_servers/tasks/main.yml
+#
 
-- name: Install mariadb server (Ubuntu)
-  tags: ubuntu,db,mariadb
-  ansible.builtin.apt:
-    name: mariadb-server
+- name: Install mariadb
+  tags: mariadb
+  ansible.builtin.package:
+    name: "{{ db_package_name }}"
     state: present
-  when: ansible_distribution == "Ubuntu"

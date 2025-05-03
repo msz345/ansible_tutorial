@@ -1,5 +1,10 @@
+#
+# Description: file_servers task book
+# Path:     /roles/file_servers/tasks/main.yml
+#
+
 - name: Install samba package
   tags: samba
   ansible.builtin.package:
-    name: samba
+    name: "{{ samba_package_name }}"
     state: present
