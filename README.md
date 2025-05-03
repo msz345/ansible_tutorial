@@ -6,42 +6,69 @@
 
 Test Ansible is working
 
-```ansible all --key-file ~/.ssh/ansible -i inventory -m ping```
+```bash
+ansible all --key-file ~/.ssh/ansible -i inventory -m ping
+```
 
 List all of the hosts in the inventory
 
-```ansible all --list-hosts```
+```bash
+ansible all --list-hosts
+```
 
 Gather facts about your hosts
 
-```ansible all -m gather_facts```
+```bash
+ansible all -m gather_facts
+```
 
 Tell ansible to use sudo (become)
 
-```ansible all -m apt -a update_cache=true --become --ask-become-pass```
+```bash
+ansible all -m apt -a update_cache=true --become --ask-become-pass
+```
 
 Install a package via the apt module
 
-```ansible all -m apt -a name=vim-nox --become --ask-become-pass```
+```bash
+ansible all -m apt -a name=vim-nox --become --ask-become-pass
+```
 
 Install a package via the apt module, and also make sure it’s the latest version available
 
-```ansible all -m apt -a "name=snapd state=latest" --become --ask-become-pass```
+```bash
+ansible all -m apt -a "name=snapd state=latest" --become --ask-become-pass
+```
 
 Upgrade all the package updates that are available
 
-```ansible all -m apt -a upgrade=dist --become --ask-become-pass```
+```bash
+ansible all -m apt -a upgrade=dist --become --ask-become-pass
+```
 
 Run the playbook
 
-```ansible-playbook --ask-become-pass install_apache.yml```
+```bash
+ansible-playbook --ask-become-pass install_apache.yml
+```
 
 List the available tags in a playbook
 
-```ansible-playbook --list-tags site.yml```
+```bash
+ansible-playbook --list-tags site.yml
+```
 
 Examples of running a playbook but targeting specific tags
 
-```ansible-playbook --tags db --ask-become-pass site.yml
+```bash
+ansible-playbook --tags db --ask-become-pass site.yml
 ansible-playbook --tags centos --ask-become-pass site.yml
-ansible-playbook --tags apache --ask-become-pass site.yml```
+ansible-playbook --tags apache --ask-become-pass site.yml
+```
+
+Run bootstrap playbook to setup mandatory user, then run site playbook to setup all servers.
+
+```bash
+ansible-playbook --ask-become-pass bootstrap.yml
+ansible-playbook site.yml
+```
