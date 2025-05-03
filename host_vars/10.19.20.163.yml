@@ -2,3 +2,5 @@ samba_package_name: samba
 unzip_package_name: unzip
 terraform_archive_name: https://releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_linux_amd64.zip
 terraform_path: /usr/local/bin
+ssh_template_file: sshd_config_ubuntu.j2
+ssh_service_name: ssh

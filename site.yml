@@ -10,24 +10,16 @@
 #           /roles/file_servers/tasks/main.yml
 #
 
-- name: Update repository cache (CentOS)
+- name: Update repository cache
   hosts: all
   become: true
   pre_tasks:
 
-    - name: Install updates (CentOS)
+    - name: Update repository cache
       tags: always
-      ansible.builtin.dnf:
+      ansible.builtin.package:
         update_cache: true
       changed_when: false
-      when: ansible_distribution == "CentOS"
-
-    - name: Update repository cache (Ubuntu)
-      tags: always
-      ansible.builtin.apt:
-        update_cache: true
-      changed_when: false
-      when: ansible_distribution == "Ubuntu"
 
 - name: Create users
   hosts: all
