@@ -7,7 +7,7 @@
 Test Ansible is working
 
 ```bash
-ansible all --key-file ~/.ssh/ansible -i inventory -m ping
+ansible all -i inventory -m ping
 ```
 
 List all of the hosts in the inventory

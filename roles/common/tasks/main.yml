@@ -15,7 +15,7 @@
   tags: always
   ansible.posix.authorized_key:
     user: marcus
-    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFgPobE5CbVaQVFFL15cAuobYEJ3aHm/MrlHtdOxfBrt gaming-pc"
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMNI9Lw67QnO6AXIadpU9jKmb/22HXPaSBWeTzvm14G GamingPC"
 
 - name: Add sudoers file for marcus
   tags: always
